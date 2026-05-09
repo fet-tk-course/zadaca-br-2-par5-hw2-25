@@ -2,7 +2,7 @@
 # Zadaća 2 - REST API aplikacija
 
 ## O projektu
-
+Turistička agencija
 Aplikacija služi za digitalnu evidenciju turističkih aranžmana i upravljanje rezervacijama klijenata. Sistem omogućava potpunu CRUD funkcionalnost nad podacima o putovanjima i klijentima, pružajući agenciji centralizovan pregled ponude i prodaje.
 
 ## Tim
