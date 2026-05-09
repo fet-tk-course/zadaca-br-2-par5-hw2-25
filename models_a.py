@@ -4,7 +4,7 @@ from typing import Optional
 # TODO: Student A - Definiši svoj SQLModel entitet ovdje
 # 
 
-//osnova struktura SQLModel entiteta
+#osnova struktura SQLModel entiteta
 class ArrangementBase(SQLModel):
     destination:                    str     
     price:                          float
