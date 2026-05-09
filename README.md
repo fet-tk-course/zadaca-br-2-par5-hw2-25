@@ -3,12 +3,12 @@
 
 ## O projektu
 
-[Ovdje ukratko opišite domenu vaše aplikacije i njenu svrhu]
+Aplikacija služi za digitalnu evidenciju turističkih aranžmana i upravljanje rezervacijama klijenata. Sistem omogućava potpunu CRUD funkcionalnost nad podacima o putovanjima i klijentima, pružajući agenciji centralizovan pregled ponude i prodaje.
 
 ## Tim
 
-- **Student A**: [Ime Prezime] - resurs: `/resursi_a`
-- **Student B**: [Ime Prezime] - resurs: `/resursi_b`
+- **Student A**: Edin Hodžić - resurs: `/resursi_a`
+- **Student B**: Elma Čandić - resurs: `/resursi_b`
 
 ## Instalacija i pokretanje
 
