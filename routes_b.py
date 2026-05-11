@@ -11,7 +11,6 @@ def read_bookings(
     destination: Optional[str] = None, 
     session: Session = Depends(get_session) 
 ):
-    """Dohvatanje svih rezervacija uz opcionalno filtriranje po destinaciji."""
     statement = select(Booking)
     if destination:
         statement = statement.where(Booking.destination == destination)
