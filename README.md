@@ -70,6 +70,25 @@ curl -X POST "http://localhost:8000/resursi_a" \
 ### Resurs B: `/resursi_b`
 
 [Analogno kao za Resurs A]
+## Bookings API Endpoints
+
+| Metoda | Ruta | Opis |
+|--------|------|------|
+| POST | `/bookings` | Kreiranje rezervacije |
+| GET | `/bookings` | Dohvatanje svih rezervacija |
+| GET | `/bookings/{id}` | Dohvatanje jedne rezervacije po ID-u |
+| PUT | `/bookings/{id}` | Ažuriranje (potpuna zamjena) rezervacije |
+| PATCH | `/bookings/{id}` | Djelimično ažuriranje rezervacije |
+| DELETE | `/bookings/{id}` | Brisanje rezervacije |
+
+Primjer zahtjeva:
+curl -X GET "http://127.0.0.1:8000/bookings"
+curl -X PATCH "http://127.0.0.1:8000/bookings/1" \
+-H "Content-Type: application/json" \
+-d '{
+  "status": "confirmed",
+  "is_paid": true
+}'
 
 ## Korištenje AI alata
 
