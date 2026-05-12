@@ -9,11 +9,20 @@ router = APIRouter(prefix="/bookings", tags=["Bookings"])
 @router.get("/", response_model=List[Booking])
 def read_bookings(
     destination: Optional[str] = None, 
+    min_amount: Optional[float] = None,  
+    max_amount: Optional[float] = None,  
     session: Session = Depends(get_session) 
 ):
     statement = select(Booking)
+    
     if destination:
         statement = statement.where(Booking.destination == destination)
+    
+    if min_amount is not None:
+        statement = statement.where(Booking.total_amount >= min_amount)
+        
+    if max_amount is not None:
+        statement = statement.where(Booking.total_amount <= max_amount)
     
     results = session.exec(statement).all()
     return results
