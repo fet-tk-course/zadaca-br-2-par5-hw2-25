@@ -6,6 +6,7 @@ from models_b import Booking, BookingCreate, BookingUpdate
 
 router = APIRouter(prefix="/bookings", tags=["Bookings"])
 
+# GET SVE (Sa filterima)
 @router.get("/", response_model=List[Booking])
 def read_bookings(
     destination: Optional[str] = None, 
@@ -27,6 +28,7 @@ def read_bookings(
     results = session.exec(statement).all()
     return results
 
+# GET JEDAN
 @router.get("/{id}", response_model=Booking)
 def read_booking(id: int, session: Session = Depends(get_session)):
     booking = session.get(Booking, id)
@@ -34,15 +36,16 @@ def read_booking(id: int, session: Session = Depends(get_session)):
         raise HTTPException(status_code=404, detail="Booking not found")
     return booking
 
-@router.post("/", status_code=201)
+# POST (Kreiranje - ostavljena verzija sa response_model)
+@router.post("/", response_model=Booking, status_code=201)
 def create_booking(booking: BookingCreate, session: Session = Depends(get_session)):
     db_booking = Booking.model_validate(booking)
     session.add(db_booking)
     session.commit()
     session.refresh(db_booking)
-
     return db_booking
 
+# PUT (Potpuna izmjena)
 @router.put("/{id}", response_model=Booking)
 def update_booking_full(id: int, booking: BookingCreate, session: Session = Depends(get_session)):
     db_booking = session.get(Booking, id)
@@ -58,6 +61,7 @@ def update_booking_full(id: int, booking: BookingCreate, session: Session = Depe
     session.refresh(db_booking)
     return db_booking
 
+# PATCH (Djelimična izmjena)
 @router.patch("/{id}", response_model=Booking)
 def partial_update_booking(id: int, booking_data: BookingUpdate, session: Session = Depends(get_session)):
     db_booking = session.get(Booking, id)
@@ -73,6 +77,7 @@ def partial_update_booking(id: int, booking_data: BookingUpdate, session: Sessio
     session.refresh(db_booking)
     return db_booking
 
+# DELETE
 @router.delete("/{id}", status_code=204)
 def delete_booking(id: int, session: Session = Depends(get_session)):
     booking = session.get(Booking, id)

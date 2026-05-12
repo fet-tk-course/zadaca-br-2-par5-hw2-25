@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
 from database import create_db_and_tables
+import routes_a
 import routes_b
 
 
@@ -17,7 +18,7 @@ app = FastAPI(
     lifespan=lifespan
 )
 app.include_router(routes_b.router )
-
+app.include_router(routes_a.router)
 @app.get("/")
 def read_root():
     return {"message": "Zadaća 2 - REST API"}
