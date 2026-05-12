@@ -96,9 +96,9 @@ curl -X PATCH "http://127.0.0.1:8000/bookings/1" \
 **Model:** [GPT-4, Copilot model, ...]
 
 **Primjer 1:**
-- **Prompt:** [Npr. "Kreiraj SQLModel klasu za entitet Knjiga sa poljima naslov, autor, godina, isbn"]
-- **Kako je pomoglo:** [Opis]
-- **Prilagodbe:** [Da li ste morali prilagoditi generisani kod]
+- **Prompt:** Napiši mi rutu za GET zahtjev koja omogućava filtriranje rezervacija po destinaciji
+- **Kako je pomoglo:** Generisan je kod koji koristi select i .where() uslove, što je omogućilo naprednu pretragu baze umjesto samo listanja svih podataka.
+- **Prilagodbe:** Prilagodila sam nazive varijabli da se tačno poklapaju sa mojim modelom i dodala Optional tipove kako filteri ne bi bili obavezni
 
 **Primjer 2:**
 - **Prompt:** [Npr. "Implementiraj PATCH endpoint sa exclude_unset=True"]
