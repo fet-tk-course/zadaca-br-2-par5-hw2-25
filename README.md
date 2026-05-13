@@ -52,12 +52,12 @@ uvicorn main:app --reload
 
 | Metoda | Ruta | Opis |
 |--------|------|------|
-| GET | `/resursi_a` | Lista svih resursa (sa query filterom) |
-| GET | `/resursi_a/{id}` | Dohvatanje resursa po ID-u |
-| POST | `/resursi_a` | Kreiranje novog resursa |
-| PUT | `/resursi_a/{id}` | Potpuna zamjena resursa |
-| PATCH | `/resursi_a/{id}` | Djelimično ažuriranje resursa |
-| DELETE | `/resursi_a/{id}` | Brisanje resursa |
+| GET | `/arrangement` | Dohvatanje svih aranzmana ili filtriranje po destinaciji |
+| GET | `/arrangement/{id}` | Dohvatanje aranzmana po ID-u |
+| POST | `/arrangement` | Kreiranje novog aranzmana |
+| PUT | `/arrangement/{id}` | Azuriranje cijelog aranzmana |
+| PATCH | `/arrangement/{id}` | Djelimično azuriranje aranzmana |
+| DELETE | `/arrangement/{id}` | Brisanje aranzmana po ID-u |
 
 **Primjer zahtjeva:**
 ```bash
@@ -101,10 +101,10 @@ curl -X PATCH "http://127.0.0.1:8000/bookings/1" \
 - **Prilagodbe:** Prilagodila sam nazive varijabli da se tačno poklapaju sa mojim modelom i dodala Optional tipove kako filteri ne bi bili obavezni
 
 **Primjer 2:**
-- **Prompt:** [Npr. "Implementiraj PATCH endpoint sa exclude_unset=True"]
-- **Kako je pomoglo:** [Opis]
-- **Prilagodbe:** [Opis]
+- **Prompt:** Objasni mi sta sve trebam imati kada definisem strukturu podataka u models_a.py
+- **Kako je pomoglo:** Dobio sam jasniju sliku kako tacno trebam napraviti srukture koje sam napravio u ovom file-u
+- **Prilagodbe:** Prilagodjeni nazivi, dodane odredjene stavke (npr. duration_days), a neke izbacene 
 
 ## Napomene
 
-[Dodatne napomene specifične za vašu implementaciju]
+Pokretanje se vrsi istim postupkom koji je naveden u prethodnim dijelovima README.md file-a. 
