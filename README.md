@@ -89,3 +89,18 @@ curl -X POST "http://localhost:8000/resursi_a" \
 ## Napomene
 
 [Dodatne napomene specifične za vašu implementaciju]
+
+## Odbrana zadace - zadatak 3
+
+### Zadatak 1:
+
+Dodani su validatori za cijenu i destinaciju. Validatori provjeravaju da li je naziv destinacije popunjen - ako nije poziva se ValueError, slicno je i za cijenu, ukoliko je cijena <=0, poziva se ValueError.
+
+U POST router dodana je provjera, ukoliko vec postoji arrangement sa istim nazivom destinacije, vraca se HTTP 409 Exception.
+
+### Zadatak 2:
+
+Dodan endpoint /stats, koji racuna ukupan broj aranzmana i prosjecnu cijenu istih. 
+Primjer ocekivanog odgovora za novi endpoint: 
+GET/stats --> "total_arrangements": 7, 
+              "average_price": 35.0

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlmodel import Session, select
+from sqlmodel import Session, select, func
 from typing import List, Optional
 
 from database import get_session
@@ -7,9 +7,21 @@ from models_a import Arrangement, ArrangementCreate, ArrangementUpdate
 
 router = APIRouter(prefix="/resursi_a", tags=["Resurs A"])
 
+@router.get("/stats")
+def get_arrangement_stats(session: Session = Depends(get_session)):
+    total = session.exec(select(func.count(Arrangement.id))).one()
+    avg_price = session.exec(select(func.avg(Arrangement.price))).one()
+    
+    return {
+        "total_arrangements": total,
+        "average_price": round(avg_price, 2) if avg_price else 0
+    }
+
 # POST - kreiranje novog aranzmana
 @router.post("/", response_model=Arrangement, status_code=status.HTTP_201_CREATED)
 def create_arrangement(arrangement: ArrangementCreate, session: Session = Depends(get_session)):
+    if arrangement == arrangement.where(Arrangement.destination == arrangement.destination).first():
+        raise HTTPException(status_code=409, detail="Arrangement with this destination already exists")
     db_arrangement = Arrangement.model_validate(arrangement)
     session.add(db_arrangement)
     session.commit()
