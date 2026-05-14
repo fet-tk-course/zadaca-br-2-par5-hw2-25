@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlmodel import Session, select
+from sqlmodel import Session, select, func 
 from typing import List, Optional
 from database import get_session
 from models_b import Booking, BookingCreate, BookingUpdate
 
 router = APIRouter(prefix="/bookings", tags=["Bookings"])
-
 @router.get("/", response_model=List[Booking])
 def read_bookings(
     destination: Optional[str] = None, 
@@ -13,10 +12,38 @@ def read_bookings(
 ):
     statement = select(Booking)
     if destination:
-        statement = statement.where(Booking.destination == destination)
-    
+        statement = statement.where(Booking.destination == destination)    
     results = session.exec(statement).all()
     return results
+
+@router.get("/zad2") 
+def get_booking_stats(session: Session = Depends(get_session)):
+    total_bookings = session.exec(select(func.count(Booking.id))).one()
+    total_rev = session.exec(select(func.sum(Booking.total_amount))).one()
+    return {
+        "ukupno_rezervacija": total_bookings,
+        "ukupna_zarada": total_rev or 0
+    }
+
+@router.post("/", status_code=201)
+def create_booking(booking: BookingCreate, session: Session = Depends(get_session)):
+    postoji = session.exec(
+        select(Booking).where(
+            Booking.customer_email == booking.customer_email,
+            Booking.destination == booking.destination
+        )
+    ).first()
+    
+    if postoji:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, 
+            detail="Rezervacija već postoji"
+        )
+    db_booking = Booking.model_validate(booking)
+    session.add(db_booking)
+    session.commit()
+    session.refresh(db_booking)
+    return db_booking
 
 @router.get("/{id}", response_model=Booking)
 def read_booking(id: int, session: Session = Depends(get_session)):
@@ -31,7 +58,6 @@ def create_booking(booking: BookingCreate, session: Session = Depends(get_sessio
     session.add(db_booking)
     session.commit()
     session.refresh(db_booking)
-
     return db_booking
 
 @router.put("/{id}", response_model=Booking)
@@ -39,11 +65,9 @@ def update_booking_full(id: int, booking: BookingCreate, session: Session = Depe
     db_booking = session.get(Booking, id)
     if not db_booking:
         raise HTTPException(status_code=404, detail="Booking not found")
-    
     booking_data = booking.model_dump()
     for key, value in booking_data.items():
         setattr(db_booking, key, value)
-        
     session.add(db_booking)
     session.commit()
     session.refresh(db_booking)
@@ -54,12 +78,9 @@ def partial_update_booking(id: int, booking_data: BookingUpdate, session: Sessio
     db_booking = session.get(Booking, id)
     if not db_booking:
         raise HTTPException(status_code=404, detail="Booking not found")
-
     update_data = booking_data.model_dump(exclude_unset=True)
-
     for key, value in update_data.items():
         setattr(db_booking, key, value)
-
     session.commit()
     session.refresh(db_booking)
     return db_booking
@@ -69,6 +90,5 @@ def delete_booking(id: int, session: Session = Depends(get_session)):
     booking = session.get(Booking, id)
     if not booking:
         raise HTTPException(status_code=404, detail="Booking not found")
-
     session.delete(booking)
     session.commit()

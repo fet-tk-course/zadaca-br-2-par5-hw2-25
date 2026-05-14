@@ -1,30 +1,23 @@
 from sqlmodel import SQLModel, Field
 from typing import Optional
 from datetime import datetime
+from pydantic import field_validator
 
 class Booking(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    
-    # Podaci o klijentu
     customer_full_name: str
     customer_email: str
     customer_phone: str
-
-    # Podaci o putovanju
     destination: str
     departure_date: datetime
     return_date: datetime
     number_of_travelers: int
-
-    # Podaci o plaćanju
     total_amount: float
     is_paid: bool = Field(default=False)
     payment_method: Optional[str] = None
-
     status: str = Field(default="pending")
     booking_date: datetime = Field(default_factory=datetime.now)
 
-# 2. Shema za kreiranje (XCreate)
 class BookingCreate(SQLModel):
     customer_full_name: str
     customer_email: str
@@ -38,7 +31,20 @@ class BookingCreate(SQLModel):
     payment_method: Optional[str] = None
     status: str = "pending"
 
-# 3. Shema za ažuriranje (XUpdate)
+    @field_validator('customer_full_name')
+    @classmethod
+    def ime_ne_smije_biti_prazno(cls, v):
+        if not v.strip():
+            raise ValueError('Ime i prezime  ne smije biti prazan string') 
+        return v.strip()
+
+    @field_validator('number_of_travelers')
+    @classmethod
+    def broj_putnika_mora_biti_pozitivan(cls, v):
+        if v <= 0:
+            raise ValueError('Broj mora biti veći od nule') 
+        return v
+
 class BookingUpdate(SQLModel):
     customer_full_name: Optional[str] = None
     customer_email: Optional[str] = None
