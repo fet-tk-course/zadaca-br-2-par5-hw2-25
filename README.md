@@ -88,4 +88,13 @@ curl -X POST "http://localhost:8000/resursi_a" \
 
 ## Napomene
 
-[Dodatne napomene specifične za vašu implementaciju]
+Validator: U model BookingCreate dodani su  validatori koristeći @field_validator. Validacija osigurava da customer_full_name ne može biti prazan string i da number_of_travelers mora biti broj veći od 0.
+{
+  "ukupno_rezervacija": 5,
+  "ukupna_zarada": 4650.75
+}
+Provjera duplikata : Unutar POST endpointa za kreiranje rezervacije dodana je logiks koja pretražuje bazu.
+Dodan je novi endpoint /bookings/zad2 koji koristi GET metodu.
+Ruta je definisana prije rute /{id} jer poslije nije moguce.
+Zadatak 2: Napravila smo rutu /bookings/zad2 .
+Redoslijed u kodu: Stavila sam ga iznad rute /{id} kako bi radilo.
